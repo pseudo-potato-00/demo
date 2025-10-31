@@ -2,6 +2,8 @@
 include 'db_connect.php'; // Use your external database connection file
 $api_key_value = "1234"; // A secret key for security
 
+header('Content-Type: application/json'); // Tell Arduino we’re sending JSON
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $api_key = test_input($_POST["api_key"]);
     if ($api_key == $api_key_value) {
@@ -14,20 +16,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $pf = test_input($_POST["pf"]);
         $error = test_input($_POST["error"]);
         //$TimeStamp = test_input($_POST["TimeStamp"]);
-        
+
         $sql = "INSERT INTO sensordata (sensorid, ampere, voltage, power, energy, frequency, pf, error)
-                VALUES ('" . $sensorid . "', '" . $ampere . "', '" . $voltage . "', '" . $power . "', '" . $energy . "', '" . $frequency . "', '" . $pf . "', '" . $error . "')";
+                VALUES ('$sensorid', '$ampere', '$voltage', '$power', '$energy', '$frequency', '$pf', '$error')";
 
         if ($conn->query($sql) === TRUE) {
-            echo "New record created successfully";
+            echo json_encode([
+                "status" => "success",
+                "message" => "New record created successfully"
+            ]);
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            echo json_encode([
+                "status" => "error",
+                "message" => $conn->error
+            ]);
         }
     } else {
-        echo "Wrong API Key provided.";
+        echo json_encode([
+            "status" => "error",
+            "message" => "Wrong API Key provided."
+        ]);
     }
 } else {
-    echo "No data posted with HTTP POST.";
+    echo json_encode([
+        "status" => "error",
+        "message" => "No data posted with HTTP POST."
+    ]);
 }
 
 $conn->close();
