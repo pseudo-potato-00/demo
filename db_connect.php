@@ -34,5 +34,5 @@ if (!mysqli_real_connect(
 mysqli_query($conn, "SET time_zone = '+08:00'");
 
 // Optional success message for testing
-echo "✅ Connected successfully to TiDB Cloud!";
+//echo "✅ Connected successfully to TiDB Cloud!";
 ?>
