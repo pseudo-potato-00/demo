@@ -5,7 +5,7 @@ $port = getenv('DB_PORT') ?: 4000; // fallback to 4000 if not set
 $user = getenv('DB_USER');
 $password = getenv('DB_PASS');
 $database = getenv('DB_NAME');
-$ssl_ca = __DIR__ . '/isrgrootx1.pem'; // Make sure this file is in your repo root
+$ssl_ca = __DIR__ . '/isrgrootx1.pem'; // Make sure this file exists in your repo root
 
 // Initialize MySQL connection
 $conn = mysqli_init();
@@ -31,6 +31,6 @@ if (!mysqli_real_connect(
     die("Connection failed: " . mysqli_connect_error());
 }
 
+// Set timezone to match Philippine time (UTC+8)
 mysqli_query($conn, "SET time_zone = '+08:00'");
-
 ?>

@@ -1,9 +1,9 @@
 <?php
 include 'db_connect.php';
-header('Content-Type: application/json'); // Tell Arduino this is JSON
-$api_key_value = "1234";
+header('Content-Type: application/json'); // Output JSON
 
-$response = []; // prepare array for JSON response
+$api_key_value = "1234";
+$response = [];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $api_key = test_input($_POST["api_key"] ?? '');
@@ -37,9 +37,6 @@ echo json_encode($response);
 $conn->close();
 
 function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
+    return htmlspecialchars(stripslashes(trim($data)));
 }
 ?>
